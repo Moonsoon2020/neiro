@@ -66,11 +66,19 @@ def nonlin(x, deriv=False):
         return x * (1 - x)
 
     return 1 / (1 + np.exp(-x))
-
+# ввод количества битовых симоволов от 0 до 10 включительно
 n = int(input())
-rez = list(map(lambda x: [int(x)], [input() for i in range(2 ** n)]))
+rez = list(map(lambda x: [int(x)], [input() for i in range(2 ** n)]))   # ввод значений при разных функциях тип при 0
+# 0 одно, при 0 1 другое или тоже системе пофиг
+# Пример ввода:
+# 2
+# 0
+# 1
+# 1
+# 0
+# тип для 0 0 -> 0; 0 1 -> 1; 1 0 -> 1; 1 1 -> 0
 maska = []
-for i in range(2 ** n):
+for i in range(2 ** n): #
     bet = [int(i) for i in str(bin(i))[2:]]
     bet = [0] * (n - len(bet)) + bet
     maska.append(bet)
@@ -91,7 +99,7 @@ for j in range(60000):
     l1 = nonlin(np.dot(l0, syn0))
     l2 = nonlin(np.dot(l1, syn1))
 
-    # как сильно мы ошиблись относительно нужной величины?
+    # как сильно мы ошиблись относительно нужной величины
     l2_error = y - l2
 
     if (j % 10000) == 0:
@@ -119,13 +127,11 @@ syn1 = maink[2]
 print(syn0)
 print(syn1)
 print(sum(abs(maink[0])) / 4)
+# тут малясь системного вывода, а следом вывод всего и коэффициенты уверенности
 for i in range(2 ** vvod):
     bet = [int(i) for i in str(bin(i))[2:]]
     bet = [0] * (vvod - len(bet)) + bet
-    maska.append(bet)
-for i in maska:
-    l0 = i
+    l0 = bet
     l1 = nonlin(np.dot(l0, syn0))
     l2 = nonlin(np.dot(l1, syn1))
-
-    print(round(l2[0]), l0)
+    print(round(l2[0]), l2[0], l0)
