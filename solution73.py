@@ -1,27 +1,28 @@
 n, k = map(int, input().split())
 x = list(map(int, input().split()))
 b = list(map(int, input().split()))
+# n, k = 10 ** 4 - 2, 1
+# x = '1' * (10 ** 4-3) + '2'
+# b = [*range(1, 10**4)]
 w = {}
+libs = {}
 facrez = 0
+bsum = sum(b) / len(b)
+b1 = list(map(lambda alfa: bsum - alfa, b))
+bx = [i ** 2 for i in b1]
+sumbx = sum(bx)
 for k in x:
-    p = [1 if i == k else 0 for i in x]
-    z = ''.join(map(str, p))
-    if z in w.keys():
-        facrez += w[z]
+    if k in w.keys():
+        facrez += w[k]
     else:
-        a = p
+        a = [1 if i == k else 0 for i in x]
         asum = sum(a) / len(a)
-        bsum = sum(b) / len(b)
         a1 = list(map(lambda alfa: asum - alfa, a))
-        b1 = list(map(lambda alfa: bsum - alfa, b))
         ax = []
         for i in a1:
             ax.append(i ** 2)
-        bx = []
-        for i in b1:
-            bx.append(i ** 2)
         ab = [i * j for i, j in zip(a1, b1)]
-        rez = sum(ab) / ((sum(ax) * sum(bx)) ** 0.5)
-        w[z] = rez
+        rez = sum(ab) / ((sum(ax) * sumbx) ** 0.5)
+        w[k] = rez
         facrez += rez
 print(facrez / n)
