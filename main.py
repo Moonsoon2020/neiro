@@ -49,6 +49,19 @@ def nonlinmy(x, deriv=False):
     return [[1 / (math.exp(-f) + 1) for f in pp] for pp in x]
 
 
+def pri(st):
+    if 0.75 > st:
+        return 1.0
+    elif 0.25 >= st >= 0.75:
+        return 0.5
+    elif -0.25 > st > 0.25:
+        return 0.0
+    elif -0.75 >= st >= -0.25:
+        return -0.5
+    else:
+        return -1.0
+
+
 n = int(input())
 rez = []
 for i in range(2 ** n):
@@ -91,15 +104,20 @@ for j in range(6000):
     l1_error_my = dot(l2_delta_my, [[i[0] for i in mysyn1]])
     l1_delta_my = persi(l1_error_my, nonlinmy(myl1, deriv=True))
     mysyn1 = [[round(i[0] + j[0], 7)] for i, j in list(zip(mysyn1, dot(myl1, [[alfa * i[0]] for i in l2_delta_my])))]
-    mysyn0 = [[i + j * alfa for i, j in list(zip(mysyn0[k], dot1(myl0, l1_delta_my)[k]))] for k in range(len(mysyn0))]
+    mysyn0 = [[round(i + j * alfa, 7) for i, j in list(zip(mysyn0[k], dot1(myl0, l1_delta_my)[k]))] for k in range(len(mysyn0))]
 # тут малясь системного вывода, а следом вывод всего и коэффициенты уверенности
-for i in range(2 ** vvod):
-    bet = [int(i) for i in str(bin(i))[2:]]
-    bet = [0] * (vvod - len(bet)) + bet
-    l0 = bet
-    myl0 = bet
-    myl1 = nonlinmy(dot([myl0], mysyn0))
-    myl2 = nonlinmy(dot(myl1, mysyn1))
-    print(round(myl2[0][0]), myl2[0][0])
-print(mysyn0)
-print(mysyn1)
+# for i in range(2 ** vvod):
+#     bet = [int(i) for i in str(bin(i))[2:]]
+#     bet = [0] * (vvod - len(bet)) + bet
+#     l0 = bet
+#     myl0 = bet
+#     myl1 = nonlinmy(dot([myl0], mysyn0))
+#     myl2 = nonlinmy(dot(myl1, mysyn1))
+#     print(round(myl2[0][0]), myl2[0][0])
+print(2)
+print(len(mysyn0[0]), 1)
+for i in range(len(mysyn1)):
+    for j in range(len(mysyn0)):
+        print(pri(mysyn0[j][i]), end=' ')
+    print(0)
+print(' '.join(map(lambda a: str(pri(a[0])), mysyn1)) + ' 0')
